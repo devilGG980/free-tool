@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual Image Tools - Grid View</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --accent: #fd79a8;
+            --light: #f8f9fa;
+            --dark: #2d3436;
+            --success: #00b894;
+            --warning: #fdcb6e;
+            --info: #0984e3;
+            --danger: #d63031;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: var(--dark);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            color: var(--dark);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            padding: 40px 0;
+        }
+        
+        .tool-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        
+        .tool-image {
+            height: 180px;
+            width: 100%;
+            object-fit: cover;
+            border-bottom: 4px solid;
+        }
+        
+        .tool-content {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .tool-content h3 {
+            margin-bottom: 10px;
+            color: var(--dark);
+            font-size: 1.3rem;
+        }
+        
+        .tool-content p {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        .tool-footer {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .tool-btn {
+            display: inline-block;
+            padding: 8px 20px;
+            background: var(--primary);
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .tool-btn:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+        }
+        
+        .tool-category {
+            font-size: 0.8rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: #f0f0f0;
+            color: #555;
+        }
+        
+        /* Border colors based on category */
+        .border-edit { border-color: var(--primary); }
+        .border-convert { border-color: var(--success); }
+        .border-enhance { border-color: var(--info); }
+        .border-generate { border-color: var(--accent); }
+        .border-analyze { border-color: var(--warning); }
+        .border-extract { border-color: #00cec9; }
+        
+        /* Responsive adjustments */
+        @media (max-width: 900px) {
+            .tools-grid {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+                gap: 20px;
+            }
+            
+            .tool-image {
+                height: 150px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tool-image {
+                height: 200px;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Visual Image Tools</h1>
+            <p>Powerful image processing tools with visual previews. See what each tool can do before you try it!</p>
+        </header>
+        
+        <div class="tools-grid">
+            <!-- Tool 1: Image Cropper -->
+            <div class="tool-card">
+                <img src="https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
+                     alt="Image Cropper Preview" class="tool-image border-edit">
+                <div class="tool-content">
+                    <h3>Image Cropper</h3>
+                    <p>Precisely crop your images to any size or aspect ratio. Perfect for social media or print.</p>
+                    <div class="tool-footer">
+                        <span class="tool-category">Editing</span>
+                        <a href="#" class="tool-btn">Try Now</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tool 2: Format Converter -->
+            <div class="tool-card">
+                <img src="https://images.unsplash.com/photo-1610563166150-b34df4f3bcd6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
+                     alt="Format Converter Preview" class="tool-image border-convert">
+                <div class="tool-content">
+                    <h3>Format Converter</h3>
+                    <p>Convert between JPG, PNG, GIF, WEBP and more without losing quality.</p>
+                    <div class="tool-footer">
+                        <span class="tool-category">Conversion</span>
+                        <a href="#" class="tool-btn">Convert</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tool 3: Photo Enhancer -->
+            <div class="tool-card">
+                <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
+                     alt="Photo Enhancer Preview" class="tool-image border-enhance">
+                <div class="tool-content">
+                    <h3>AI Photo Enhancer</h3>
+                    <p>Automatically enhance your photos with AI-powered technology. Fix lighting and colors.</p>
+                    <div class="tool-footer">
+                        <span class="tool-category">Enhancement</span>
+                        <a href="#" class="tool-btn">Enhance</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tool 4: AI Art Generator -->
+            <div class="tool-card">
+                <img src="https://images.unsplash.com/photo-1682695796954-bad0d0f59ff1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
+                     alt="AI Art Generator Preview" class="tool-image border-generate">
+                <div class="tool-content">
+                    <h3>AI Art Generator</h3>
+                    <p>Create stunning AI-generated artwork from your text prompts. Endless creative possibilities.</p>
+                    <div class="tool-footer">
+                        <span class="tool-category">Generation</span>
+                        <a href="#" class="tool-btn">Create</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tool 5: Color Picker -->
+            <div class="tool-card">
+                <img src="https://images.unsplash.com/photo-1493612276216-ee3925520721?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
+                     alt="Color Picker Preview" class="tool-image border-analyze">
+                <div class="tool-content">
+                    <h3>Color Palette Extractor</h3>
+                    <p>Extract colors from any image and get their HEX, RGB, and HSL values.</p>
+                    <div class="tool-footer">
+                        <span class="tool-category">Analysis</span>
+                        <a href="#" class="tool-btn">Extract</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tool 6: Background Remover -->
+            <div class="tool-card">
+                <img src="https://images.unsplash.com/photo-1682686580391-615b4b8f53e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
+                     alt="Background Remover Preview" class="tool-image border-extract">
+                <div class="tool-content">
+                    <h3>Background Remover</h3>
+                    <p>Instantly remove backgrounds from images with perfect precision.</p>
+                    <div class="tool-footer">
+                        <span class="tool-category">Extraction</span>
+                        <a href="#" class="tool-btn">Remove BG</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tool 7: Image Compressor -->
+            <div class="tool-card">
+                <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
+                     alt="Image Compressor Preview" class="tool-image border-convert">
+                <div class="tool-content">
+                    <h3>Image Compressor</h3>
+                    <p>Reduce image file size without noticeable quality loss. Perfect for web optimization.</p>
+                    <div class="tool-footer">
+                        <span class="tool-category">Conversion</span>
+                        <a href="#" class="tool-btn">Compress</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tool 8: Photo Collage -->
+            <div class="tool-card">
+                <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
+                     alt="Photo Collage Preview" class="tool-image border-edit">
+                <div class="tool-content">
+                    <h3>Photo Collage Maker</h3>
+                    <p>Combine multiple photos into beautiful collages with customizable layouts.</p>
+                    <div class="tool-footer">
+                        <span class="tool-category">Editing</span>
+                        <a href="#" class="tool-btn">Create Collage</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

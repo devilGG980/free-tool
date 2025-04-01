@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Free online tool to upscale and enhance your images. Increase resolution, improve sharpness and clarity with our advanced AI-powered image upscaler.">
+    <meta name="keywords" content="image upscaler, photo enhancer, increase resolution, image sharpener, AI upscaling, free image tool">
+    <title>PixelPerfect - AI Image Upscaler & Enhancer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/upscaler@1.0.0/dist/upscaler.min.js"></script>
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --accent: #fd79a8;
+            --light: #f8f9fa;
+            --dark: #2d3436;
+            --success: #00b894;
+            --warning: #fdcb6e;
+            --danger: #d63031;
+            --radius: 12px;
+            --shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px 0;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            color: var(--dark);
+            opacity: 0.8;
+        }
+        
+        .ad-container {
+            width: 100%;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+            min-height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .tool-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+        
+        @media (min-width: 992px) {
+            .tool-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        .upload-section, .result-section {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 30px;
+            box-shadow: var(--shadow);
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title i {
+            font-size: 1.8rem;
+        }
+        
+        .drop-area {
+            border: 2px dashed var(--secondary);
+            border-radius: var(--radius);
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+        
+        .drop-area:hover {
+            border-color: var(--primary);
+            background-color: rgba(108, 92, 231, 0.05);
+        }
+        
+        .drop-area.active {
+            border-color: var(--success);
+            background-color: rgba(0, 184, 148, 0.05);
+        }
+        
+        .upload-icon {
+            font-size: 3rem;
+            color: var(--secondary);
+            margin-bottom: 15px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
+        }
+        
+        .btn-secondary {
+            background: var(--light);
+            color: var(--dark);
+            box-shadow: none;
+        }
+        
+        .btn-secondary:hover {
+            background: #e9ecef;
+            box-shadow: none;
+        }
+        
+        .controls {
+            margin-top: 30px;
+        }
+        
+        .control-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            -webkit-appearance: none;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 10px;
+            outline: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+            cursor: pointer;
+        }
+        
+        .value-display {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .preview-container {
+            position: relative;
+            margin-top: 20px;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .preview-image {
+            width: 100%;
+            display: block;
+        }
+        
+        .image-placeholder {
+            width: 100%;
+            height: 300px;
+            background-color: #f1f3f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #adb5bd;
+            border-radius: var(--radius);
+        }
+        
+        .upload-preview {
+            width: 100%;
+            max-height: 400px;
+            object-fit: contain;
+            display: none;
+        }
+        
+        .compare-slider {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .compare-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        .before-label, .after-label {
+            position: absolute;
+            padding: 5px 10px;
+            background-color: rgba(0,0,0,0.7);
+            color: white;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            z-index: 2;
+        }
+        
+        .before-label {
+            top: 10px;
+            left: 10px;
+        }
+        
+        .after-label {
+            top: 10px;
+            right: 10px;
+        }
+        
+        .slider-handle {
+            position: absolute;
+            width: 4px;
+            background-color: white;
+            height: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            cursor: ew-resize;
+            z-index: 3;
+        }
+        
+        .slider-handle::after {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: white;
+            border: 3px solid var(--primary);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255,255,255,0.8);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--secondary);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .file-info {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .tagline {
+                font-size: 1rem;
+            }
+            
+            .upload-section, .result-section {
+                padding: 20px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>PixelPerfect Upscaler</h1>
+            <p class="tagline">Enhance your images with AI-powered upscaling and sharpening</p>
+        </header>
+        
+        <!-- Ad Space Top -->
+        <div class="ad-container">
+            <!-- Google AdSense Ad Unit -->
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_ADSENSE_ID"></script>
+            <!-- Responsive Ad Unit -->
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-YOUR_ADSENSE_ID"
+                 data-ad-slot="YOUR_AD_SLOT_ID"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+        
+        <div class="tool-container">
+            <div class="upload-section">
+                <h2 class="section-title">
+                    <span class="material-icons-outlined">upload</span>
+                    Upload Image
+                </h2>
+                
+                <div id="dropArea" class="drop-area">
+                    <div class="upload-icon">
+                        <span class="material-icons-outlined">cloud_upload</span>
+                    </div>
+                    <p>Drag & drop your image here or click to browse</p>
+                    <input type="file" id="fileInput" accept="image/*" class="hidden">
+                </div>
+                
+                <div class="preview-container">
+                    <div id="imagePlaceholder" class="image-placeholder">
+                        <p>Your uploaded image will appear here</p>
+                    </div>
+                    <img id="uploadPreview" class="upload-preview" alt="Uploaded image preview">
+                </div>
+                
+                <div class="controls">
+                    <div class="control-group">
+                        <label for="scaleFactor">Upscale Factor</label>
+                        <select id="scaleFactor" class="form-control">
+                            <option value="2">2x</option>
+                            <option value="4" selected>4x</option>
+                            <option value="8">8x</option>
+                        </select>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="sharpness">Sharpness</label>
+                        <input type="range" id="sharpness" min="0" max="100" value="50">
+                        <div class="value-display">
+                            <span>Soft</span>
+                            <span id="sharpnessValue">50</span>
+                            <span>Sharp</span>
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="clarity">Clarity</label>
+                        <input type="range" id="clarity" min="0" max="100" value="50">
+                        <div class="value-display">
+                            <span>Low</span>
+                            <span id="clarityValue">50</span>
+                            <span>High</span>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button id="upscaleBtn" class="btn" disabled>
+                            <span class="material-icons-outlined">auto_awesome</span>
+                            Upscale Image
+                        </button>
+                        <button id="resetBtn" class="btn btn-secondary" disabled>
+                            <span class="material-icons-outlined">restart_alt</span>
+                            Reset
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="fileInfo" class="file-info hidden">
+                    <p><strong>Filename:</strong> <span id="fileName"></span></p>
+                    <p><strong>Dimensions:</strong> <span id="fileDimensions"></span></p>
+                    <p><strong>Size:</strong> <span id="fileSize"></span></p>
+                </div>
+            </div>
+            
+            <div class="result-section">
+                <h2 class="section-title">
+                    <span class="material-icons-outlined">image</span>
+                    Result
+                </h2>
+                
+                <div id="resultContainer" class="preview-container">
+                    <div id="resultPlaceholder" class="image-placeholder">
+                        <p>Your upscaled image will appear here</p>
+                    </div>
+                    
+                    <div id="compareContainer" class="compare-slider hidden">
+                        <img id="originalImage" class="compare-image" style="width: 100%;">
+                        <img id="upscaledImage" class="compare-image" style="width: 100%;">
+                        <div class="before-label">Original</div>
+                        <div class="after-label">Upscaled</div>
+                        <div class="slider-handle"></div>
+                    </div>
+                    
+                    <div id="loadingIndicator" class="loading hidden">
+                        <div class="spinner"></div>
+                        <p>Processing your image...</p>
+                        <p id="progressText">This may take a few moments</p>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button id="downloadBtn" class="btn" disabled>
+                        <span class="material-icons-outlined">download</span>
+                        Download
+                    </button>
+                    <button id="compareBtn" class="btn btn-secondary" disabled>
+                        <span class="material-icons-outlined">compare</span>
+                        Compare
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Ad Space Bottom -->
+        <div class="ad-container">
+            <!-- Google AdSense Ad Unit -->
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_ADSENSE_ID"></script>
+            <!-- Responsive Ad Unit -->
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-YOUR_ADSENSE_ID"
+                 data-ad-slot="YOUR_AD_SLOT_ID"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+        
+        <footer>
+            <p>&copy; 2023 PixelPerfect Upscaler. All rights reserved.</p>
+            <p>This tool uses AI technology to enhance your images while preserving quality.</p>
+        </footer>
+    </div>
+    
+    <script>
+        // DOM Elements
+        const dropArea = document.getElementById('dropArea');
+        const fileInput = document.getElementById('fileInput');
+        const upscaleBtn = document.getElementById('upscaleBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const compareBtn = document.getElementById('compareBtn');
+        const imagePlaceholder = document.getElementById('imagePlaceholder');
+        const uploadPreview = document.getElementById('uploadPreview');
+        const resultPlaceholder = document.getElementById('resultPlaceholder');
+        const compareContainer = document.getElementById('compareContainer');
+        const originalImage = document.getElementById('originalImage');
+        const upscaledImage = document.getElementById('upscaledImage');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const fileInfo = document.getElementById('fileInfo');
+        const fileName = document.getElementById('fileName');
+        const fileDimensions = document.getElementById('fileDimensions');
+        const fileSize = document.getElementById('fileSize');
+        const sharpnessSlider = document.getElementById('sharpness');
+        const claritySlider = document.getElementById('clarity');
+        const sharpnessValue = document.getElementById('sharpnessValue');
+        const clarityValue = document.getElementById('clarityValue');
+        const scaleFactor = document.getElementById('scaleFactor');
+        const progressText = document.getElementById('progressText');
+        
+        // Variables
+        let uploadedFile = null;
+        let processedImage = null;
+        let isComparing = false;
+        
+        // Event Listeners
+        dropArea.addEventListener('click', () => fileInput.click());
+        
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length) {
+                handleFileUpload(e.target.files[0]);
+            }
+        });
+        
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, preventDefaults, false);
+        });
+        
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropArea.addEventListener(eventName, highlight, false);
+        });
+        
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, unhighlight, false);
+        });
+        
+        function highlight() {
+            dropArea.classList.add('active');
+        }
+        
+        function unhighlight() {
+            dropArea.classList.remove('active');
+        }
+        
+        dropArea.addEventListener('drop', (e) => {
+            const dt = e.dataTransfer;
+            const file = dt.files[0];
+            if (file && file.type.match('image.*')) {
+                handleFileUpload(file);
+            }
+        });
+        
+        upscaleBtn.addEventListener('click', upscaleImage);
+        resetBtn.addEventListener('click', resetTool);
+        downloadBtn.addEventListener('click', downloadImage);
+        compareBtn.addEventListener('click', toggleCompare);
+        
+        sharpnessSlider.addEventListener('input', () => {
+            sharpnessValue.textContent = sharpnessSlider.value;
+        });
+        
+        claritySlider.addEventListener('input', () => {
+            clarityValue.textContent = claritySlider.value;
+        });
+        
+        // Initialize compare slider
+        if (compareContainer) {
+            const sliderHandle = compareContainer.querySelector('.slider-handle');
+            let isDragging = false;
+            
+            sliderHandle.addEventListener('mousedown', () => {
+                isDragging = true;
+            });
+            
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+            
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging || !isComparing) return;
+                
+                const containerRect = compareContainer.getBoundingClientRect();
+                let x = e.clientX - containerRect.left;
+                
+                // Keep within bounds
+                x = Math.max(0, Math.min(x, containerRect.width));
+                
+                const percent = (x / containerRect.width) * 100;
+                
+                originalImage.style.width = `${percent}%`;
+                sliderHandle.style.left = `${percent}%`;
+            });
+            
+            // Touch support
+            sliderHandle.addEventListener('touchstart', () => {
+                isDragging = true;
+            });
+            
+            document.addEventListener('touchend', () => {
+                isDragging = false;
+            });
+            
+            document.addEventListener('touchmove', (e) => {
+                if (!isDragging || !isComparing) return;
+                
+                const containerRect = compareContainer.getBoundingClientRect();
+                let x = e.touches[0].clientX - containerRect.left;
+                
+                // Keep within bounds
+                x = Math.max(0, Math.min(x, containerRect.width));
+                
+                const percent = (x / containerRect.width) * 100;
+                
+                originalImage.style.width = `${percent}%`;
+                sliderHandle.style.left = `${percent}%`;
+            });
+        }
+        
+        // Functions
+        function handleFileUpload(file) {
+            if (!file.type.match('image.*')) {
+                alert('Please upload an image file (JPEG, PNG, etc.)');
+                return;
+            }
+            
+            uploadedFile = file;
+            
+            // Display file info
+            fileName.textContent = file.name;
+            fileSize.textContent = formatFileSize(file.size);
+            
+            const img = new Image();
+            img.onload = function() {
+                fileDimensions.textContent = `${this.width} × ${this.height} px`;
+                
+                // Show the uploaded image preview
+                imagePlaceholder.style.display = 'none';
+                uploadPreview.src = this.src;
+                uploadPreview.style.display = 'block';
+                
+                // Set the original image for comparison
+                originalImage.src = this.src;
+                
+                fileInfo.classList.remove('hidden');
+                upscaleBtn.disabled = false;
+                resetBtn.disabled = false;
+            };
+            img.src = URL.createObjectURL(file);
+        }
+        
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+        
+        async function upscaleImage() {
+            if (!uploadedFile) return;
+            
+            // Show loading indicator
+            loadingIndicator.classList.remove('hidden');
+            resultPlaceholder.classList.add('hidden');
+            compareContainer.classList.add('hidden');
+            upscaleBtn.disabled = true;
+            
+            try {
+                // Simulate processing delay (in a real app, you'd use actual AI processing)
+                progressText.textContent = "Initializing AI model...";
+                await delay(1000);
+                
+                progressText.textContent = "Analyzing image details...";
+                await delay(1500);
+                
+                progressText.textContent = "Enhancing resolution...";
+                await delay(2000);
+                
+                progressText.textContent = "Adjusting sharpness and clarity...";
+                await delay(1500);
+                
+                progressText.textContent = "Finalizing image...";
+                await delay(1000);
+                
+                // For this demo, we'll just create a canvas and upscale it
+                const img = new Image();
+                img.onload = async function() {
+                    const scale = parseInt(scaleFactor.value);
+                    const sharpness = parseInt(sharpnessSlider.value) / 50; // Normalize to 0-2 range
+                    const clarity = parseInt(claritySlider.value) / 50;
+                    
+                    // Create canvas for "processing"
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    
+                    // Set new dimensions
+                    canvas.width = img.width * scale;
+                    canvas.height = img.height * scale;
+                    
+                    // Draw original image scaled up
+                    ctx.imageSmoothingEnabled = false;
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    
+                    // Apply some simple filters to simulate sharpness/clarity
+                    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    const data = imageData.data;
+                    
+                    // Simple sharpening effect
+                    for (let i = 0; i < data.length; i += 4) {
+                        // Adjust contrast (clarity)
+                        data[i] = 128 + (data[i] - 128) * clarity;
+                        data[i+1] = 128 + (data[i+1] - 128) * clarity;
+                        data[i+2] = 128 + (data[i+2] - 128) * clarity;
+                        
+                        // Simple sharpening (edge enhancement)
+                        if (i > 4 && (i+4) % (canvas.width * 4) !== 0) {
+                            data[i] = Math.min(255, data[i] * sharpness);
+                            data[i+1] = Math.min(255, data[i+1] * sharpness);
+                            data[i+2] = Math.min(255, data[i+2] * sharpness);
+                        }
+                    }
+                    
+                    ctx.putImageData(imageData, 0, 0);
+                    
+                    // Get the processed image
+                    processedImage = canvas.toDataURL('image/png');
+                    upscaledImage.src = processedImage;
+                    
+                    // Show result
+                    loadingIndicator.classList.add('hidden');
+                    compareContainer.classList.remove('hidden');
+                    downloadBtn.disabled = false;
+                    compareBtn.disabled = false;
+                    
+                    // Reset compare state
+                    isComparing = false;
+                    originalImage.style.width = '50%';
+                    compareContainer.querySelector('.slider-handle').style.left = '50%';
+                    compareBtn.textContent = 'Compare';
+                };
+                
+                img.src = URL.createObjectURL(uploadedFile);
+                
+            } catch (error) {
+                console.error('Error during upscaling:', error);
+                loadingIndicator.classList.add('hidden');
+                alert('An error occurred during processing. Please try again.');
+                upscaleBtn.disabled = false;
+            }
+        }
+        
+        function toggleCompare() {
+            isComparing = !isComparing;
+            compareBtn.textContent = isComparing ? 'Stop Comparing' : 'Compare';
+        }
+        
+        function downloadImage() {
+            if (!processedImage) return;
+            
+            const link = document.createElement('a');
+            link.href = processedImage;
+            link.download = `upscaled_${uploadedFile.name.split('.')[0]}.png`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        
+        function resetTool() {
+            // Reset file input
+            fileInput.value = '';
+            
+            // Reset UI
+            imagePlaceholder.style.display = 'flex';
+            uploadPreview.style.display = 'none';
+            uploadPreview.src = '';
+            resultPlaceholder.classList.remove('hidden');
+            compareContainer.classList.add('hidden');
+            loadingIndicator.classList.add('hidden');
+            fileInfo.classList.add('hidden');
+            
+            // Reset buttons
+            upscaleBtn.disabled = true;
+            resetBtn.disabled = true;
+            downloadBtn.disabled = true;
+            compareBtn.disabled = true;
+            
+            // Reset sliders
+            sharpnessSlider.value = 50;
+            claritySlider.value = 50;
+            sharpnessValue.textContent = '50';
+            clarityValue.textContent = '50';
+            scaleFactor.value = '4';
+            
+            // Reset variables
+            uploadedFile = null;
+            processedImage = null;
+            isComparing = false;
+        }
+        
+        function delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+        
+        // Initialize Material Icons
+        const materialIcons = document.createElement('link');
+        materialIcons.href = 'https://fonts.googleapis.com/icon?family=Material+Icons+Outlined';
+        materialIcons.rel = 'stylesheet';
+        document.head.appendChild(materialIcons);
+    </script>
+</body>
+</html>
